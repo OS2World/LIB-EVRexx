@@ -1,0 +1,104 @@
+#
+#   EVRexxDLL.emx: make file for EVRexx.dll
+#   Copyright (C) 1994 - 1995 by Bernhard Bablok
+#   This file is part of the EVRexx package.
+#
+#   EVRexx is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   EVRexx is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+#   email: ua302cb@sunmail.lrz-muenchen.de
+#   smail: B. Bablok
+#          K.-Schumacher-Str. 70
+#          D-82256 Fuerstenfeldbruck
+#
+PROJECT = EVRexx
+MODE = D
+G_CFLAGS = -Zomf -mprobe
+D_CFLAGS = -g2 -D_DEBUG
+P_CFLAGS = -O2
+G_LFLAGS = -Zdll -Zso -Zsys -Zomf
+D_LFLAGS =
+P_LFLAGS = -s
+ifeq ($(findstring -Zomf,$($(MODE)_CFLAGS) $(G_CFLAGS)),-Zomf)
+O  = .obj
+else
+O = .o
+endif
+CC = gcc
+SOURCES =  printf.c _DLL_InitTerm.c rexxUtils.c \
+           EVRinterfaceFuncs.c EVRinit.c EVRmessageBox.c EVRcleanup.c \
+           EVRfileDialog.c EVRloadDialog.c EVRprocessDialog.c \
+           EVRdestroyDialog.c EVRmanageControl.c init_termControl.c \
+           EVRshowWindow.c EVRversion.c EVRsetVars.c
+RC_FILE =
+RES_FILE = $(subst .rc,.RES,$(RC_FILE))
+MODULE_FILE = EVRexxDLL.def
+TARGET_TYPE = DLL
+OBJECTS = $(SOURCES:.c=$(O))
+VPATH   = .
+OBJ_DIR = $(VPATH)/DLL_obj$(MODE)/
+vpath %$(O) $(OBJ_DIR)
+
+.PHONY : all
+all:
+	$(MAKE) -f EVRexxDll.emx -C $(VPATH) $(PROJECT).dll
+
+$(PROJECT).dll : $(OBJECTS) $(OBJ_DIR)globalDLLData.obj $(MODULE_FILE)
+	$(CC) $(OBJECTS:%=$(OBJ_DIR)%) $(OBJ_DIR)globalDLLData.obj $(G_LFLAGS) \
+            $($(MODE)_LFLAGS) $(MODULE_FILE) -o $(PROJECT).dll
+
+$(OBJECTS) : %$(O) : %.c
+	$(CC) $(G_CFLAGS) $($(MODE)_CFLAGS) -c $< -o $(OBJ_DIR)$(@F)
+
+#
+# A special rule for global (shared) DLL data. The data is put in a unique segment.
+#
+
+$(OBJ_DIR)globalDLLData.obj : globalDLLData.c
+	$(CC) $(filter-out -Zomf, $(G_CFLAGS) $($(MODE)_CFLAGS)) -c $< \
+            -o $(basename $@).o
+	emxomf -d -D GLOBAL -o $@ $(basename $@).o
+
+printf$(O) : printf.c
+
+_DLL_InitTerm$(O) : _DLL_InitTerm.c  EVRexx.h
+
+rexxUtils.$(O) : rexxUtils.c
+
+EVRinterfaceFuncs(O) : EVRinterfaceFuncs.c  xternDLL.h
+
+EVRinit$(O) : EVRinit.c xternDLL.h EVRexx.h
+
+EVRcleanup$(O) : EVRcleanup.c xternDLL.h EVRexx.h
+
+EVRmessageBox$(O) : EVRmessageBox.c xternDLL.h EVRexx.h
+
+EVRfileDialog$(O) : EVRfileDialog.c xternDLL.h EVRexx.h
+
+EVRloadDialog$(O) : EVRloadDialog.c xternDLL.h EVRexx.h
+
+EVRprocessDialog$(O) : EVRprocessDialog.c xternDLL.h EVRexx.h
+
+EVRdestroyDialog$(O) : EVRdestroyDialog.c xternDLL.h EVRexx.h
+
+EVRmanageControl$(O) : EVRmanageControl.c xternDLL.h EVRexx.h
+
+init_termControl$(O) : init_termControl.c
+
+EVRshowWindow$(O) : EVRshowWindow.c xternDLL.h EVRexx.h
+
+EVRversion.$(O) : EVRversion.c EVRexx.h
+
+EVRsetVars.$(O) : EVRsetVars.c EVRexx.h
+

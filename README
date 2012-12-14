@@ -1,0 +1,83 @@
+
+
+                    README  for EVRexx Version 1.00
+                    -------------------------------
+
+Version: 26-Mar-1995       Copyright (c) 1994-1995 by Bernhard Bablok
+
+
+Summary
+-------
+
+EVRexx is a package of external functions for REXX-programs. EVRexx
+enables the use of PM dialog-windows from your REXX-application.
+
+Installation
+------------
+
+Unzip the EVRexx.zip file. In the directory \EVRexx\doc you will find an
+OS/2 online manual with a chapter `Installation`. Use the command
+`view evrexx` to read the manual.
+
+EVRexx also needs the emx-runtime package emxrt.zip, version emx0.9a or
+above. This package is available from various ftp-sites and mailboxes.
+
+List of files
+-------------
+
+\EVRexx\runtime:
+
+    EVRexx.dll         the DLL of external functions
+    EVRexx.exe         the PM-driver program
+
+\EVRexx\doc:
+
+    EVRexx.inf         the online manual (user's guide and reference)
+    EVRexx.ndx         the EPM help-index
+    copying.evr        the EVRexx license statement
+    copying            the GNU General Public License
+    README             this file
+
+\EVRexx\dev:
+
+    EVRmkdll.cmd       a REXX-script to create resource DLLs
+    EVRempty.obj       a file required by EVRmkdll.cmd
+    EVRempty.c         source file for EVRempty.obj
+    EVRempty.def       another file required by EVRmkdll.cmd
+    EVRh2Rex.cmd       a REXX-script to define #defined variables in
+                       header-files as REXX-variables
+
+\EVRexx\src:
+
+    source files of EVRexx
+
+\EVRexx\samples\EVRzip:
+
+    EVRzip.cmd          a simple unzip front-end
+    EVRzip.dll          the resource DLL for EVRzip.cmd
+    EVRzip.h            the header file for EVRzip.cmd and EVRzip.dlg
+    EVRzip.rc           the resource script file
+    EVRzip.res          the compiled resource script file
+    EVRzip.dlg          the dialog script file
+
+\EVRexx\samples\PMCon:
+
+    PMCon.cmd           a console useful for printf/fprintf output of
+                        PM-programs
+    PMCon.dll           the resource DLL for PMCon.cmd
+    PMCon.h             the header file for PMCon.cmd and PMCon.dlg
+    PMCon.doc           help-file for PMCon.cmd
+    PMCon.dlg           the dialog script file
+    PMCon.res           the compiled resource
+
+
+Address of author
+-----------------
+
+Internet: ua302cb@sunmail.lrz-muenchen.de
+IBMMAIL:  DECCPFL9
+
+Snail-mail: Bernhard Bablok
+            Kurt-Schumacher-Str. 70
+            D-82256 Fuerstenfeldbruck      (TeX: F\"urstenfeldbruck)
+

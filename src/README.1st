@@ -1,0 +1,39 @@
+
+
+                     Compiling EVRexx Version 1.00
+                     -----------------------------
+
+Version: 26-Mar-1995       Copyright (c) 1994-1995 by Bernhard Bablok
+
+
+This version of EVRexx was compiled using emx0.9a at fixlevel 03. If you
+want to recompile this package with a different compiler, you might have
+to change the code, since the GNU C-compiler allows pointer arithmetic on
+void pointers. Changing PVOID to PCHAR (and VOID* to CHAR*) should do, but
+I haven't tested it.
+
+Also, you need the `pmprintf` package written by Mike Cowlishaw. This is
+EWS (Employee Written Software) from IBM and available free of charge from
+various ftp sites (look for a package called pmprtf.zip). I have slightly
+modified the source, a diff is distributed in the file printf.diff.
+
+As an alternative, remove the #define of _WANT_PMPRINTF from EVRexx.h and
+remove all occurrences of printf.* from the makefiles (*.emx). Debug output
+then goes to stdout.
+
+Needless to say that you need a HPFS formatted drive for the source files.
+No, this won't shock you!
+
+Please read the files copying.evr and COPYING in the doc-subdirectory. These
+contain the license statements.
+
+Address of author
+-----------------
+
+Internet: ua302cb@sunmail.lrz-muenchen.de
+IBMMAIL:  DECCPFL9
+
+Snail-mail: Bernhard Bablok
+            Kurt-Schumacher-Str. 70
+            D-82256 Fuerstenfeldbruck      (TeX: F\"urstenfeldbruck)
+

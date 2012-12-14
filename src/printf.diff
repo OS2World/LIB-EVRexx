@@ -1,0 +1,55 @@
+*** j:printf.c	Mon May 31 12:06:20 1993
+--- printf.c	Wed Nov 09 20:14:00 1994
+***************
+*** 105,110 ****
+--- 105,114 ----
+  #define INCL_DOS                   /* Operating system definitions */
+  #include <os2.h>                   /* For OS/2 functions */
+  
++ #if defined __EMX__
++   #define max(a,b) ((a) > (b) ? (a) : (b))
++ #endif
++ 
+  /* ----- Local defines ----- */
+  #define PRINTFIDSIZE sizeof(PRINTFID)
+  #define PRINTFMAXBUF PRINTFIDSIZE+PRINTFLINELEN
+***************
+*** 130,136 ****
+  /* The "printf" function.  Note this has a variable number of        */
+  /* arguments.                                                        */
+  /* ----------------------------------------------------------------- */
+! int printf(const unsigned char *f)
+    {
+    TIB    *ptib;                    /* process/thread id structures */
+    PIB    *ppib;                    /* .. */
+--- 134,144 ----
+  /* The "printf" function.  Note this has a variable number of        */
+  /* arguments.                                                        */
+  /* ----------------------------------------------------------------- */
+! #if defined __EMX__
+! int pmprintf(__const__ char *f, ...)
+! #else
+! int printf(const unsigned char* f)
+! #endif
+    {
+    TIB    *ptib;                    /* process/thread id structures */
+    PIB    *ppib;                    /* .. */
+***************
+*** 264,270 ****
+  
+    /* Write the selector, size, and timestamp to the queue */
+    if (tp->bell) size=-size;        /* BELL passed by negation */
+!   time(&timenow);                  /* optional - else use 0 */
+    urc=DosWriteQueue(qhandle,       /* handle */
+           (unsigned)timenow,        /* 'request' (timestamp) */
+           (unsigned)size,           /* 'length'  (length/bell) */
+--- 272,280 ----
+  
+    /* Write the selector, size, and timestamp to the queue */
+    if (tp->bell) size=-size;        /* BELL passed by negation */
+! /*time(&timenow);                  /* optional - else use 0 */
+!   timenow = 0;
+! 
+    urc=DosWriteQueue(qhandle,       /* handle */
+           (unsigned)timenow,        /* 'request' (timestamp) */
+           (unsigned)size,           /* 'length'  (length/bell) */

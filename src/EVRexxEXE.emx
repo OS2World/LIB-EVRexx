@@ -1,0 +1,79 @@
+#
+#   EVRexxEXE.emx: make file for EVRexx.exe
+#   Copyright (C) 1994 - 1995 by Bernhard Bablok
+#   This file is part of the EVRexx package.
+#
+#   EVRexx is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   EVRexx is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+#   email: ua302cb@sunmail.lrz-muenchen.de
+#   smail: B. Bablok
+#          K.-Schumacher-Str. 70
+#          D-82256 Fuerstenfeldbruck
+#
+PROJECT = EVRexx
+MODE = D
+G_CFLAGS = -Zmtd
+D_CFLAGS = -g2 -D_DEBUG
+P_CFLAGS = -Zomf -O2
+G_LFLAGS =
+D_LFLAGS =
+P_LFLAGS = -Zomf -s
+ifeq ($(findstring -Zomf,$($(MODE)_CFLAGS) $(G_CFLAGS)),-Zomf)
+O  = .obj
+else
+O = .o
+endif
+CC = gcc
+SOURCES = EVRexx.c shadowWndProc.c printf.c processControl.c
+RC_FILE =
+MODULE_FILE = EVRexxEXE.def
+TARGET_TYPE = PM-EXE
+OBJECTS = $(SOURCES:.c=$(O))
+VPATH   = .
+OBJ_DIR = $(VPATH)/EXE_obj$(MODE)/
+vpath %$(O) $(OBJ_DIR)
+
+.PHONY : all
+all:
+	$(MAKE) -f EVRexxEXE.emx -C $(VPATH) $(PROJECT).exe
+
+
+ifeq ($(O),.obj)
+$(PROJECT).exe :: $(OBJECTS) $(MODULE_FILE)
+	$(CC) $(OBJECTS:%=$(OBJ_DIR)%) $(G_LFLAGS) $($(MODE)_LFLAGS) $(MODULE_FILE) \
+            -o $(PROJECT).exe
+else
+$(PROJECT).exe : $(PROJECT).out $(MODULE_FILE)
+	emxbind -b -d$(MODULE_FILE) $(PROJECT).out
+
+$(PROJECT).out : $(OBJECTS)
+	$(CC) $(OBJECTS:%=$(OBJ_DIR)%) $(G_LFLAGS) $($(MODE)_LFLAGS) -o \
+            $(PROJECT).out
+endif
+
+$(OBJECTS) : %$(O) : %.c
+	$(CC) $(G_CFLAGS) $($(MODE)_CFLAGS) -c $< -o $(OBJ_DIR)$(@F)
+
+%.RES : %.rc
+	rc -r $<
+
+EVRexx$(O) : EVRexx.c  EVRexx.h
+
+shadowWndProc$(O) : shadowWndProc.c EVRexx.h xternEXE.h
+
+printf$(O) : printf.c
+
+processControl$(O) : processControl.c
+
