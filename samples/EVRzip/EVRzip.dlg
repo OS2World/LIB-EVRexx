@@ -1,0 +1,45 @@
+DLGINCLUDE 1 "EVRzip.h"
+
+DLGTEMPLATE UNZIP_DIALOG LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Unzip Options", UNZIP_DIALOG, 187, 74, 236, 101, , FCF_SYSMENU |
+            FCF_TITLEBAR
+    BEGIN
+        LTEXT           "Target directory:", -1, 7, 84, 75, 8
+        ENTRYFIELD      "", UNZIP_DIR, 83, 84, 126, 8, ES_MARGIN
+        AUTORADIOBUTTON "prompt user", OPTION_PROMPT, 13, 62, 66, 10,
+                        WS_GROUP | WS_TABSTOP
+        AUTORADIOBUTTON "overwrite", OPTION_OVERWRITE, 13, 45, 54, 10,
+                        WS_TABSTOP
+        AUTORADIOBUTTON "never overwrite", OPTION_NEVEROVWR, 13, 27, 81, 10,
+                        WS_TABSTOP
+        AUTOCHECKBOX    "junk paths", OPTION_JUNK, 125, 62, 58, 10, WS_GROUP
+        AUTOCHECKBOX    "freshen files", OPTION_FRESHEN, 125, 45, 67, 10
+        AUTOCHECKBOX    "update files", OPTION_UPDATE, 125, 27, 72, 10
+        DEFPUSHBUTTON   "OK", DID_OK, 35, 7, 40, 14, WS_GROUP
+        PUSHBUTTON      "CANCEL", DID_CANCEL, 139, 7, 40, 14
+    END
+END
+
+DLGTEMPLATE ZIPINFO_DIALOG LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "EVRzip - Sample Program", ZIPINFO_DIALOG, 11, 47, 463, 179, ,
+            FCF_SYSMENU | FCF_TITLEBAR
+    BEGIN
+        LTEXT           "Text for header", ARCH_HEADER, 9, 162, 436, 8
+        LTEXT           "Text for totals", ARCH_TOTALS, 9, 149, 436, 8, NOT
+                        WS_GROUP
+        LISTBOX         ARCH_INFO, 68, 34, 383, 104, LS_MULTIPLESEL |
+                        LS_HORZSCROLL | LS_EXTENDEDSEL | WS_GROUP
+        PUSHBUTTON      "OK", DID_OK, 121, 8, 40, 14
+        PUSHBUTTON      "Refresh", CHANGE_OPTIONS, 245, 7, 40, 14
+        DEFPUSHBUTTON   "Unzip selected...", UNZIP_SELECTED, 331, 8, 76, 14
+        AUTORADIOBUTTON "filenames", OPTION_1, 5, 106, 55, 10, WS_GROUP |
+                        WS_TABSTOP
+        AUTORADIOBUTTON "short", OPTION_SHORT, 5, 88, 39, 10, WS_TABSTOP
+        AUTORADIOBUTTON "medium", OPTION_MEDIUM, 5, 70, 47, 10, WS_TABSTOP
+        AUTORADIOBUTTON "long", OPTION_LONG, 5, 52, 39, 10, WS_TABSTOP
+        GROUPBOX        "Format", -1, 0, 34, 63, 108
+    END
+END
+

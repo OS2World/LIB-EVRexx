@@ -1,0 +1,89 @@
+PMCon - EVRexx sample program.
+-------------------------------
+
+All output written to stdout/stderr by true PM-programs is usally lost -
+unless you redirect this output to some files or to other programs.  The
+idea of PMCon is to redirect this output to a REXX-queue, read the queue
+and write the output to a MLE-window.  This window will act as a
+console. Of course, PMCon can be used with any program, but it is
+especially useful for PM-programs.
+
+PMCon is driven by various commands. Programs are startet with (case is
+irrelevant exept for options and of course program arguments):
+
+     PMCon START [-np] program [program arguments]
+
+This call will create the REXX-queue PMCON and the MLE, start the
+program, pipe the results to the RXQUEUE-program (part of OS/2, acting
+as an interface to the REXX-queue) and read the queue until PMCon is
+stopped from outside (see below).
+
+If the queue PMCon already exists, only the program is started. In this
+case, PMCon stops afterwards, since the original copy will already
+collect the output.
+
+The meaning of the options is explained in the command overview below.
+
+-------------------------------
+
+As an example, try:
+   start pcmon start dir  -> pipes output from dir to newly created window.
+   pmcon edit             -> switch to edit mode (enables basic cut and paste).
+   pmcon save             -> saves output to a file (after a a dialog).
+   pmcon start pstat      -> adds new output to the window.
+   pmcon stop -a          -> stop after presenting a dialog to append text.
+
+
+-------------------------------
+
+The operation of the console is driven by various commands. They can be
+issued using PMCon, or directly from the program. For example
+
+   PMCon STOP -s PMCON results.dat
+
+from the commandline is equivalent to
+
+   printf("+++STOP -s results.dat\n");
+
+from within the program. In the later case no queuename is necessary,
+since the output is automatically piped to the correct queue.
+
+
+-------------------------------
+
+Overwiew of commands (the escape sequence '+++' must be used from within
+programs):
+
+PMCon START [-np] program [program arguments]
+   Starts the program and routes the output to a REXX-queue
+   -n: start the program in a new session
+   -p: use a private queue (default: PMCon)
+
+PMCon STOP [-sa] [queuename [filename]]
++++STOP [-sa] [filename]
+   Close the REXX-queue (PMCon if no queue name is given)
+   -s: save output to filename (save-dialog if filename is omitted)
+   -a: append output to filename (file-dialog if filename is omitted)
+
+PMCon CLEAR [queuename]
++++CLEAR
+   Clear the output window associated with queuename (def: PMCon)
+
+PMCon EDIT [queuename]
++++EDIT
+   Remove readonly attribute from the output window
+
+PMCon NOEDIT [queuename]
++++NOEDIT
+   Set readonly attribute for the output window
+
+PMCon SAVE [queuename [filename]]
++++SAVE [filename]
+   Save output to filename (save-dialog if filename is omitted)
+
+PMCon APPEND [queuename [filename]]
++++APPEND [filename]
+   Append output to filename (file-dialog if filename is omitted)
+
+Copyright (c) 1995 by  Bernhard Bablok
+

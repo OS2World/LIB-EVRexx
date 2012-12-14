@@ -1,0 +1,4 @@
+#include <os2.h>           // OS/2  symbolic constants
+#include "EVRzip.h"        // application specific symbolic constants
+RCINCLUDE "EVRzip.dlg"     // the dialog script-file
+
